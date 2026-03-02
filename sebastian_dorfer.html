@@ -1,0 +1,949 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sebastian Dorfer — Principal Architect</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --navy:        #1a2636;
+      --navy-dark:   #0f1d2b;
+      --navy-mid:    #243548;
+      --navy-light:  #2d435a;
+      --accent:      #3d9be9;
+      --accent-dim:  rgba(61,155,233,0.18);
+      --accent-glow: rgba(61,155,233,0.35);
+      --teal:        #2ec4b6;
+      --gold:        #f4a261;
+      --text:        #dce8f4;
+      --text-muted:  #7a97b4;
+      --bg:          #f1f5f9;
+      --card:        #ffffff;
+      --border:      #dde5ef;
+      --tag-bg:      #e8f0fb;
+      --tag-text:    #1e5a9c;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg);
+      color: var(--navy);
+      line-height: 1.6;
+    }
+
+    /* ── PAGE GRID ──────────────────────────────────────── */
+    .page {
+      max-width: 1400px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 285px 1fr;
+      grid-template-rows: auto 1fr;
+      min-height: 100vh;
+      box-shadow: 0 0 80px rgba(0,0,0,.18);
+    }
+
+    /* ── HEADER ─────────────────────────────────────────── */
+    header {
+      grid-column: 1 / -1;
+      background: linear-gradient(135deg, var(--navy-dark) 0%, var(--navy) 55%, var(--navy-light) 100%);
+      padding: 44px 48px 36px;
+      display: flex;
+      align-items: center;
+      gap: 36px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    header::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 600px 400px at 80% -30%, rgba(61,155,233,.12) 0%, transparent 70%),
+        radial-gradient(ellipse 300px 300px at 100% 100%, rgba(46,196,182,.08) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .avatar {
+      width: 96px; height: 96px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent) 0%, var(--teal) 100%);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 2.2rem; font-weight: 700; color: #fff;
+      letter-spacing: -1px; flex-shrink: 0;
+      box-shadow: 0 0 0 3px rgba(255,255,255,.08), 0 8px 32px rgba(0,0,0,.3);
+      z-index: 1;
+    }
+
+    .header-text { z-index: 1; }
+
+    header h1 {
+      font-size: 2.5rem; font-weight: 700;
+      color: #fff; letter-spacing: -.5px; line-height: 1;
+      margin-bottom: 7px;
+    }
+
+    .header-title {
+      font-size: .95rem; font-weight: 500;
+      color: var(--accent); margin-bottom: 14px; letter-spacing: .3px;
+    }
+
+    .header-contacts { display: flex; flex-wrap: wrap; gap: 18px; }
+
+    .contact {
+      display: flex; align-items: center; gap: 6px;
+      font-size: .82rem; color: var(--text-muted);
+      text-decoration: none; transition: color .2s;
+    }
+    .contact:hover { color: var(--accent); }
+    .contact svg { width: 13px; height: 13px; fill: currentColor; flex-shrink: 0; }
+
+    /* ── SIDEBAR ─────────────────────────────────────────── */
+    aside {
+      background: var(--navy);
+      color: var(--text);
+      padding: 32px 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 28px;
+    }
+
+    .s-title {
+      font-size: .65rem; font-weight: 700; letter-spacing: 2.5px;
+      text-transform: uppercase; color: var(--accent);
+      margin-bottom: 14px; padding-bottom: 8px;
+      border-bottom: 1px solid rgba(61,155,233,.2);
+    }
+
+    /* Summary */
+    .summary {
+      font-size: .84rem; color: var(--text-muted);
+      line-height: 1.72; font-style: italic;
+    }
+    .summary strong {
+      display: block; margin-top: 10px; font-style: normal;
+      font-weight: 600; color: var(--text); font-size: .85rem;
+    }
+
+    /* Skills */
+    .skill-group { margin-bottom: 14px; }
+    .skill-group-label {
+      font-size: .68rem; font-weight: 600; letter-spacing: 1.2px;
+      text-transform: uppercase; color: var(--teal); margin-bottom: 7px;
+    }
+    .tags { display: flex; flex-wrap: wrap; gap: 4px; }
+    .stag {
+      background: rgba(255,255,255,.07);
+      border: 1px solid rgba(255,255,255,.1);
+      color: var(--text-muted); font-size: .73rem;
+      padding: 3px 8px; border-radius: 20px;
+      transition: all .2s; cursor: default;
+    }
+    .stag:hover { background: var(--accent-dim); border-color: var(--accent); color: var(--accent); }
+
+    /* Languages */
+    .lang { margin-bottom: 11px; }
+    .lang-row {
+      display: flex; justify-content: space-between;
+      font-size: .8rem; margin-bottom: 5px;
+    }
+    .lang-row span:first-child { color: var(--text); font-weight: 500; }
+    .lang-row span:last-child  { color: var(--text-muted); font-size: .72rem; }
+    .bar { height: 3px; background: rgba(255,255,255,.1); border-radius: 2px; overflow: hidden; }
+    .fill {
+      height: 100%; border-radius: 2px;
+      background: linear-gradient(90deg, var(--accent), var(--teal));
+      transform: scaleX(0); transform-origin: left;
+      transition: transform 1s .3s ease;
+    }
+    .fill.animate { transform: scaleX(1); }
+
+    /* Education */
+    .edu-item { margin-bottom: 16px; }
+    .edu-inst { font-size: .83rem; font-weight: 600; color: var(--text); }
+    .edu-deg  { font-size: .76rem; color: var(--text-muted); margin-top: 1px; line-height: 1.4; }
+    .edu-yr   {
+      font-size: .7rem; color: var(--accent);
+      font-family: 'JetBrains Mono', monospace; margin-top: 3px;
+    }
+
+    /* ── MAIN ────────────────────────────────────────────── */
+    main {
+      background: var(--bg);
+      padding: 32px 36px 48px;
+      overflow: hidden;
+    }
+
+    .section-heading {
+      font-size: .66rem; font-weight: 700; letter-spacing: 2.5px;
+      text-transform: uppercase; color: var(--accent);
+      margin-bottom: 20px;
+      display: flex; align-items: center; gap: 12px;
+    }
+    .section-heading::after {
+      content: ''; flex: 1; height: 1px;
+      background: linear-gradient(90deg, var(--accent), transparent);
+    }
+
+    /* ── GANTT CHART ─────────────────────────────────────── */
+    .gantt-wrap {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 20px 20px 14px;
+      margin-bottom: 36px;
+      overflow: hidden;
+    }
+
+    .gantt-grid {
+      position: relative;
+      /* 181 months = Jan 2011 → Feb 2026 */
+    }
+
+    /* Year ruler */
+    .gantt-ruler {
+      display: flex;
+      position: relative;
+      height: 22px;
+      margin-bottom: 10px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .yr-mark {
+      position: absolute;
+      font-size: .65rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 600;
+      color: var(--text-muted);
+      transform: translateX(-50%);
+      top: 0;
+    }
+    .yr-mark::after {
+      content: '';
+      position: absolute;
+      left: 50%; bottom: -5px;
+      width: 1px; height: 5px;
+      background: var(--border);
+    }
+
+    /* Rows */
+    .gantt-rows {
+      position: relative;
+      height: 104px; /* 3 rows × 30px + gaps */
+    }
+
+    .gantt-bar {
+      position: absolute;
+      height: 22px;
+      border-radius: 5px;
+      display: flex; align-items: center;
+      padding: 0 8px;
+      font-size: .68rem; font-weight: 600;
+      color: #fff; white-space: nowrap;
+      overflow: hidden; text-overflow: ellipsis;
+      cursor: default;
+      transition: filter .2s, transform .2s;
+      z-index: 1;
+    }
+    .gantt-bar:hover {
+      filter: brightness(1.15);
+      transform: scaleY(1.08);
+      z-index: 10;
+    }
+    .gantt-bar .tip {
+      display: none;
+      position: absolute;
+      top: 100%; left: 50%;
+      transform: translateX(-50%);
+      background: var(--navy-dark);
+      color: var(--text);
+      font-size: .7rem;
+      padding: 4px 8px;
+      border-radius: 4px;
+      white-space: nowrap;
+      margin-top: 4px;
+      pointer-events: none;
+      z-index: 20;
+      box-shadow: 0 4px 12px rgba(0,0,0,.3);
+    }
+    .gantt-bar:hover .tip { display: block; }
+
+    /* Vertical grid lines at year boundaries */
+    .vgrid {
+      position: absolute;
+      top: 0; bottom: 0;
+      width: 1px;
+      background: var(--border);
+      opacity: .5;
+      pointer-events: none;
+    }
+
+    /* ── VERTICAL TIMELINE ───────────────────────────────── */
+    .timeline {
+      position: relative;
+      padding-left: 30px;
+    }
+    .timeline::before {
+      content: '';
+      position: absolute; left: 7px; top: 8px; bottom: 0;
+      width: 2px;
+      background: linear-gradient(180deg,
+        var(--accent)  0%,
+        var(--teal)   35%,
+        var(--text-muted) 75%,
+        rgba(122,151,180,.15) 100%
+      );
+    }
+
+    .tl-entry {
+      position: relative;
+      margin-bottom: 22px;
+      opacity: 0;
+      transform: translateX(18px);
+      transition: opacity .45s ease, transform .45s ease;
+    }
+    .tl-entry.vis { opacity: 1; transform: translateX(0); }
+
+    .tl-dot {
+      position: absolute; left: -30px; top: 14px;
+      width: 16px; height: 16px; border-radius: 50%;
+      background: var(--card);
+      border: 2.5px solid var(--text-muted);
+      z-index: 2; transition: all .25s;
+    }
+    .tl-entry:hover .tl-dot { border-color: var(--accent); background: var(--accent); box-shadow: 0 0 10px var(--accent-glow); }
+    .tl-entry.current .tl-dot {
+      border-color: var(--accent); background: var(--accent);
+      box-shadow: 0 0 0 4px var(--accent-dim);
+      animation: pulse 2.2s ease-in-out infinite;
+    }
+    @keyframes pulse {
+      0%,100% { box-shadow: 0 0 0 4px var(--accent-dim); }
+      50%      { box-shadow: 0 0 0 8px rgba(61,155,233,.08); }
+    }
+
+    .tl-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 16px 18px;
+      box-shadow: 0 2px 8px rgba(0,0,0,.05);
+      transition: box-shadow .25s, transform .25s;
+    }
+    .tl-card:hover { box-shadow: 0 6px 24px rgba(0,0,0,.1); transform: translateY(-2px); }
+
+    .card-top {
+      display: flex; justify-content: space-between;
+      align-items: flex-start; gap: 10px; flex-wrap: wrap;
+      margin-bottom: 3px;
+    }
+    .company { font-size: .97rem; font-weight: 700; color: var(--navy); }
+    .badge {
+      font-size: .68rem; font-family: 'JetBrains Mono', monospace;
+      color: var(--text-muted); background: var(--bg);
+      border: 1px solid var(--border);
+      padding: 2px 7px; border-radius: 4px; white-space: nowrap;
+    }
+    .role { font-size: .85rem; font-weight: 500; color: var(--accent); }
+    .loc  { font-size: .75rem; color: var(--text-muted); margin-bottom: 9px; }
+    .desc { font-size: .82rem; color: #4a5568; line-height: 1.65; margin-bottom: 10px; }
+    .desc ul { list-style: none; display: flex; flex-direction: column; gap: 2px; }
+    .desc ul li::before { content: '›'; color: var(--accent); font-weight: 700; margin-right: 6px; }
+
+    .ctags { display: flex; flex-wrap: wrap; gap: 4px; }
+    .ct {
+      font-size: .69rem; font-family: 'JetBrains Mono', monospace;
+      font-weight: 500; padding: 2px 7px; border-radius: 4px;
+    }
+    .ct-lang     { background: #fffae6; color: #856100; }
+    .ct-infra  { background: #efefef; color: #444; }
+    .ct-soft  { background: #dbeeff; color: #0063a6; }
+    .ct-cloud  { background: #d8f7f5; color: #00796b; }
+    .ct-cpp    { background: #f0e8ff; color: #5b21b6; }
+    .ct-java   { background: #fff0e6; color: #9a3a00; }
+    .ct-mob    { background: #e6ffe6; color: #155a15; }
+    .ct-data   { background: #ffe6f0; color: #9a0041; }
+
+    /* ── PROFESSIONAL SUMMARY ────────────────────────────── */
+    .summary-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-left: 4px solid var(--accent);
+      border-radius: 10px;
+      padding: 22px 24px;
+      margin-bottom: 36px;
+      box-shadow: 0 2px 8px rgba(0,0,0,.05);
+    }
+
+    .summary-card p {
+      font-size: .88rem;
+      color: #374151;
+      line-height: 1.8;
+      margin-bottom: 10px;
+    }
+    .summary-card p:last-of-type { margin-bottom: 16px; }
+
+    .summary-card p strong {
+      color: var(--navy);
+      font-weight: 600;
+    }
+
+    .summary-strengths {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+    }
+
+    .strength-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: .73rem;
+      font-weight: 600;
+      padding: 4px 11px;
+      border-radius: 20px;
+      letter-spacing: .2px;
+    }
+    .sp-blue   { background: #dbeeff; color: #1a5fa6; }
+    .sp-teal   { background: #d0f7f4; color: #0d7a72; }
+    .sp-gold   { background: #fff3d6; color: #8a5a00; }
+    .sp-navy   { background: #e4eaf3; color: #1a2636; }
+    .sp-purple { background: #ede9ff; color: #5b21b6; }
+
+    /* ── PRINT ───────────────────────────────────────────── */
+    @media print {
+      body { background: #fff; }
+      .page { box-shadow: none; max-width: 100%; }
+      .tl-entry { opacity: 1 !important; transform: none !important; }
+      .fill { transform: scaleX(1) !important; }
+      @page { margin: 1.2cm; size: A4; }
+    }
+
+    /* ── RESPONSIVE ──────────────────────────────────────── */
+    @media (max-width: 780px) {
+      .page { grid-template-columns: 1fr; }
+      header { flex-direction: column; text-align: center; }
+      .header-contacts { justify-content: center; }
+    }
+  </style>
+</head>
+<body>
+<div class="page">
+
+  <!-- ══ HEADER ══════════════════════════════════════════ -->
+  <header>
+    <div class="avatar">SD</div>
+    <div class="header-text">
+      <h1>Sebastian Dorfer</h1>
+      <div class="header-title">Principal Architect &amp; Cloud Platform Engineer</div>
+      <div class="header-contacts">
+        <a class="contact" href="mailto:sebastian.d.dorfer@gmail.com">
+          <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+          sebastian.d.dorfer@gmail.com
+        </a>
+        <a class="contact" href="https://www.linkedin.com/in/sebastiandorfer" target="_blank">
+          <svg viewBox="0 0 24 24"><path d="M19 3H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2V5a2 2 0 00-2-2zM9 17H6.5v-7H9v7zm-1.25-8a1.25 1.25 0 110-2.5 1.25 1.25 0 010 2.5zM18 17h-2.4v-3.6c0-2.1-2.5-1.9-2.5 0V17H10.7v-7H13v1.1c1-1.8 4.9-2 4.9 2.2V17z"/></svg>
+          linkedin.com/in/sebastiandorfer
+        </a>
+        <span class="contact">
+          <svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 110-5 2.5 2.5 0 010 5z"/></svg>
+          Vienna / Graz, Austria
+        </span>
+      </div>
+    </div>
+  </header>
+
+  <!-- ══ SIDEBAR ══════════════════════════════════════════ -->
+  <aside>
+    <div>
+      <div class="s-title">About</div>
+      <p class="summary">
+        Principal Architect who takes ownership of hard problems and sees them through — with technical rigour, full accountability, and uncompromising integrity.
+        <strong>Led teams. Built departments. Shipped solutions.</strong>
+      </p>
+    </div>
+
+    <div>
+      <div class="s-title">Skills</div>
+      <div class="skill-group">
+        <div class="skill-group-label"></div>
+        <div class="tags">
+          <span class="stag">Teamlead</span><span class="stag">Strategy</span>
+          <span class="stag">Security</span><span class="stag">Development-Processes</span>
+          <span class="stag">Agile/Scrum</span><span class="stag">Devops</span>
+		  <span class="stag">Deployments</span><span class="stag">Monitoring</span>
+        </div>
+      </div>
+      <div class="skill-group">
+        <div class="skill-group-label">Languages &amp; Frameworks</div>
+        <div class="tags">
+          <span class="stag">C++</span><span class="stag">Java</span>
+		  <span class="stag">C#</span><span class="stag">Python</span>
+          <span class="stag">HTML/CSS</span><span class="stag">PHP</span>
+          <span class="stag">TypeScript</span><span class="stag">JavaScript</span>
+          <span class="stag">Bash/Powershell</span><span class="stag">Dart/Flutter</span>
+          <span class="stag">SQL</span>
+        </div>
+      </div>
+      <div class="skill-group">
+        <div class="skill-group-label">Infrastructure</div>
+        <div class="tags">
+          <span class="stag">Linux</span><span class="stag">Windows Server</span>
+          <span class="stag">PostgreSQL</span><span class="stag">MSSQL</span>
+          <span class="stag">Android</span><span class="stag">iOS</span>
+          <span class="stag">M365</span><span class="stag">Azure</span>
+          <span class="stag">Powerplatform</span><span class="stag">Azure Devops</span>
+          <span class="stag">SAP HANA</span><span class="stag">Mendix</span>
+          <span class="stag">Atlassian</span><span class="stag">Adobe Suite</span>
+          
+        </div>
+      </div>
+
+    </div>
+
+    <div>
+      <div class="s-title">Languages</div>
+      <div class="lang">
+        <div class="lang-row"><span>German</span><span>Native</span></div>
+        <div class="bar"><div class="fill" style="--w:1"></div></div>
+      </div>
+      <div class="lang">
+        <div class="lang-row"><span>English</span><span>Full Professional</span></div>
+        <div class="bar"><div class="fill" style="--w:.85"></div></div>
+      </div>
+      <div class="lang">
+        <div class="lang-row"><span>French</span><span>Basic</span></div>
+        <div class="bar"><div class="fill" style="--w:.3"></div></div>
+      </div>
+      <div class="lang">
+        <div class="lang-row"><span>Spanish</span><span>Elementary</span></div>
+        <div class="bar"><div class="fill" style="--w:.2"></div></div>
+      </div>
+      <div class="lang">
+        <div class="lang-row"><span>Japanese</span><span>Elementary</span></div>
+        <div class="bar"><div class="fill" style="--w:.15"></div></div>
+      </div>
+    </div>
+
+    <div>
+      <div class="s-title">Education</div>
+      <div class="edu-item">
+        <div class="edu-inst">FH Joanneum</div>
+        <div class="edu-deg">BSc Information Management</div>
+        <div class="edu-yr">2008 – 2012</div>
+      </div>
+      <div class="edu-item">
+        <div class="edu-inst">Karl-Franzens-Universität Graz</div>
+        <div class="edu-deg">Business Studies</div>
+        <div class="edu-yr">2007 – 2008</div>
+      </div>      
+	  <div class="edu-item">
+        <div class="edu-inst">Military Service</div>
+        <div class="edu-deg">Mandatory and Militia</div>
+        <div class="edu-yr">2006 – 2007</div>
+      </div>
+      <div class="edu-item">
+        <div class="edu-inst">HTL Ortwein</div>
+        <div class="edu-deg">Diploma, Graphic &amp; Communication Design</div>
+        <div class="edu-yr">2002 – 2006</div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ══ MAIN ═════════════════════════════════════════════ -->
+  <main>
+
+    <!-- ── PROFESSIONAL SUMMARY ───────────────────────── -->
+    <div class="section-heading">Professional Summary</div>
+    <div class="summary-card">
+      <p>
+        Principal Architect with <strong>15+ years</strong> delivering production-grade platforms — from
+        real-time sports data engines and cross-platform mobile games to industrial IoT cloud infrastructure
+        serving <strong>millions of edge devices</strong>. Trusted to take full ownership of complex,
+        ambiguous problems and see them through with <strong>technical integrity and end-to-end accountability</strong>,
+        from whiteboard to live system.
+      </p>
+      <p>
+        Repeatedly chosen to <strong>lead engineering teams and build IT departments from the ground up</strong>,
+        combining long-horizon strategic thinking with hands-on execution. Brings clarity to architecture
+        decisions, mentors engineers, and holds the line on quality — even under pressure.
+      </p>
+    </div>
+
+    <!-- ── GANTT CHART ─────────────────────────────────── -->
+    <div class="section-heading">Career Timeline</div>
+    <div class="gantt-wrap">
+      <div class="gantt-grid" id="gantt">
+        <!-- Ruler is injected by JS -->
+        <div class="gantt-ruler" id="ruler"></div>
+        <!-- Rows -->
+        <div class="gantt-rows" id="gantt-rows">
+          <!--
+            Scale: Jan 2011 = 0  →  Feb 2026 = 181 months
+            left  = (start_month / 181) * 100%
+            width = (duration_months / 181) * 100%
+
+            Row heights (top):
+              row 0 =  0px  (main career track)
+              row 1 = 34px  (parallel early 2011-2012)
+              row 2 = 68px  (parallel early 2011)
+          -->
+
+          <!-- Row 0 ─ main track -->
+          <div class="gantt-bar" title="Netconomy (Jan–May 2011)"
+            style="left:0%;width:2.2%;top:0;
+                   background:linear-gradient(90deg,#6b7280,#9ca3af)">
+            <span class="tip">Netconomy · Jan–May 2011</span>
+          </div>
+          <div class="gantt-bar" title="RunningBall (Jan 2012–Sep 2014)"
+            style="left:6.6%;width:17.7%;top:0;
+                   background:linear-gradient(90deg,#7c3aed,#9d5fd1)">
+            RunningBall
+            <span class="tip">RunningBall · 2012–2014</span>
+          </div>
+          <div class="gantt-bar" title="NOVOMATIC (Feb 2015–Mar 2018)"
+            style="left:27.1%;width:20.4%;top:0;
+                   background:linear-gradient(90deg,#0284c7,#38bdf8)">
+            Cervo Media
+            <span class="tip">NOVOMATIC / Cervo Media · 2015–2018</span>
+          </div>
+          <div class="gantt-bar" title="ANDRITZ (Apr 2018–Jan 2022)"
+            style="left:48.1%;width:24.9%;top:0;
+                   background:linear-gradient(90deg,#059669,#34d399)">
+            ANDRITZ
+            <span class="tip">ANDRITZ · Apr 2018–Jan 2022</span>
+          </div>
+          <div class="gantt-bar" title="Arteria Technologies (Jan 2022–Oct 2024)"
+            style="left:72.9%;width:18.2%;top:0;
+                   background:linear-gradient(90deg,#d97706,#f59e0b)">
+            Arteria
+            <span class="tip">Arteria Technologies · 2022–2024</span>
+          </div>
+          <div class="gantt-bar" title="ZYNE / TTTech (Nov 2024–Present)"
+            style="left:91.7%;width:8.3%;top:0;
+                   background:linear-gradient(90deg,#dc2626,#ef4444);
+                   box-shadow:0 0 10px rgba(239,68,68,.4)">
+            ZYNE
+            <span class="tip">ZYNE · Nov 2024–Present</span>
+          </div>
+
+          <!-- Row 1 ─ parallel 2011-2012 -->
+          <div class="gantt-bar" title="It'sYou (2011–2012)"
+            style="left:0%;width:13.3%;top:34px;
+                   background:linear-gradient(90deg,#475569,#64748b)">
+            It'sYou
+            <span class="tip">It'sYou · 2011–2012</span>
+          </div>
+
+          <!-- Row 2 ─ parallel Oct 2011 – Mar 2012 -->
+          <div class="gantt-bar" title="FH Joanneum R&D (Oct 2011–Mar 2012)"
+            style="left:5%;width:2.8%;top:68px;
+                   background:linear-gradient(90deg,#1e40af,#3b82f6)">
+            <span class="tip">FH Joanneum R&D · Oct 2011–Mar 2012</span>
+          </div>
+
+          <!-- vertical grid lines for year marks -->
+          <div class="vgrid" style="left:0%"></div>
+          <div class="vgrid" style="left:6.6%"></div>   <!-- 2012 -->
+          <div class="vgrid" style="left:19.9%"></div>  <!-- 2014 -->
+          <div class="vgrid" style="left:26.5%"></div>  <!-- 2015 -->
+          <div class="vgrid" style="left:39.8%"></div>  <!-- 2017 -->
+          <div class="vgrid" style="left:46.4%"></div>  <!-- 2018 -->
+          <div class="vgrid" style="left:59.7%"></div>  <!-- 2020 -->
+          <div class="vgrid" style="left:72.9%"></div>  <!-- 2022 -->
+          <div class="vgrid" style="left:86.2%"></div>  <!-- 2024 -->
+          <div class="vgrid" style="left:100%"></div>
+        </div>
+
+        <!-- Row labels -->
+        <div style="display:flex;gap:16px;margin-top:10px;flex-wrap:wrap">
+          <div style="font-size:.68rem;color:var(--accent);display:flex;align-items:center;gap:5px;font-weight:600">
+            <span style="display:inline-block;width:10px;height:3px;background:#ef4444;border-radius:2px;box-shadow:0 0 4px rgba(239,68,68,.6)"></span>Current position
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── VERTICAL TIMELINE ───────────────────────────── -->
+    <div class="section-heading">Experience</div>
+    <div class="timeline">
+
+      <!-- ZYNE -->
+      <div class="tl-entry current" data-d="0">
+        <div class="tl-dot"></div>
+        <div class="tl-card">
+          <div class="card-top">
+            <div>
+              <div class="company">ZYNE · TTTech</div>
+              <div class="role">Principal Product Architect</div>
+              <div class="loc">📍 Vienna, Austria</div>
+            </div>
+            <div class="badge">Nov 2024 – Present · 1 yr 3 mo</div>
+          </div>
+          <div class="desc">
+            Principal Cloud Platform Architect for an IoT data platform supporting millions of edge devices with hundreds of sensors each.
+			Ingesting and transforming terabytes of data in parallel in a highly secure environment.
+			Strategic technical decisions for ISO 27001 certified and NIS2 ready cloud platform.
+          </div>
+          <div class="ctags">
+            <span class="ct ct-soft">IT Leadership</span>
+            <span class="ct ct-soft">Strategy</span>
+            <span class="ct ct-infra">Security</span>
+            <span class="ct ct-infra">IoT Platform</span>
+            <span class="ct ct-infra">Azure</span>
+            <span class="ct ct-data">Databricks</span>
+            <span class="ct ct-data">ETL at Scale</span>
+            <span class="ct ct-lang">IaC (terraform)</span>
+            <span class="ct ct-lang">Typescript</span>
+            <span class="ct ct-lang">Python</span>
+            <span class="ct ct-lang">Go</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Arteria -->
+      <div class="tl-entry" data-d="80">
+        <div class="tl-dot"></div>
+        <div class="tl-card">
+          <div class="card-top">
+            <div>
+              <div class="company">Arteria Technologies</div>
+              <div class="role">Head of Information Technology</div>
+              <div class="loc">📍 Graz, Styria, Austria</div>
+            </div>
+            <div class="badge">Jan 2022 – Oct 2024 · 2 yrs 10 mo</div>
+          </div>
+		  <div class="desc">
+            Built up the company with founder and scaled solution from prototype to productive environment. Lead software and research teams and managed infrastructure.
+          </div>
+          <div class="ctags">
+            <span class="ct ct-soft">IT Leadership</span>
+            <span class="ct ct-soft">Strategy</span>
+            <span class="ct ct-infra">Azure</span>
+            <span class="ct ct-data">Databricks</span>
+            <span class="ct ct-data">PostgreSQL</span>
+            <span class="ct ct-data">InfluxDB</span>
+            <span class="ct ct-cloud">Digital Transformation</span>
+            <span class="ct ct-cloud">Azure</span>
+            <span class="ct ct-lang">PHP</span>
+            <span class="ct ct-lang">Typescript</span>
+            <span class="ct ct-lang">React</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ANDRITZ -->
+      <div class="tl-entry" data-d="160">
+        <div class="tl-dot"></div>
+        <div class="tl-card">
+          <div class="card-top">
+            <div>
+              <div class="company">ANDRITZ</div>
+              <div class="role">Specialist, Enterprise Content Management</div>
+              <div class="loc">📍 Graz, Austria</div>
+            </div>
+            <div class="badge">Apr 2018 – Jan 2022 · 3 yrs 10 mo</div>
+          </div>
+          <div class="desc">
+            Development team lead and software architect within a global engineering organisation.
+			Owned the SAP HANA cloud platform service and led adoption of Mendix low-code for internal tooling.
+			Drove digital transformation initiatives across full-stack web and mobile — spanning Azure cloud development, Node.js backends, and SharePoint.
+          </div>
+          <div class="ctags">
+            <span class="ct ct-soft">Teamlead</span>
+            <span class="ct ct-infra">Azure</span>
+            <span class="ct ct-infra">SAP HANA</span>
+            <span class="ct ct-infra">Mendix</span>
+            <span class="ct ct-data">PostgreSQL</span>
+            <span class="ct ct-lang">Node.js</span>
+            <span class="ct ct-lang">TypeScript</span>
+            <span class="ct ct-lang">React</span>
+            <span class="ct ct-lang">Angular</span>
+            <span class="ct ct-lang">Flutter</span>
+            <span class="ct ct-mob">Android</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- NOVOMATIC -->
+      <div class="tl-entry" data-d="240">
+        <div class="tl-dot"></div>
+        <div class="tl-card">
+          <div class="card-top">
+            <div>
+              <div class="company">NOVOMATIC / Cervo Media GmbH</div>
+              <div class="role">Mobile Games Developer / Head of IT</div>
+              <div class="loc">📍 Graz, Austria</div>
+            </div>
+            <div class="badge">Feb 2015 – Mar 2018 · 3 yrs 2 mo</div>
+          </div>
+          <div class="desc">
+            Built cross-platform mobile games in C++ for Android and iOS under the NOVOMATIC umbrella.
+			Simultaneously served as Head of IT at Cervo Media — responsible for backend and frontend development, Windows and Linux server administration, Azure infrastructure, PostgreSQL, and network security end-to-end.
+          </div>
+          <div class="ctags">
+            <span class="ct ct-infra">Azure</span>
+            <span class="ct ct-infra">Linux</span>
+            <span class="ct ct-infra">Windows Server</span>
+            <span class="ct ct-lang">C++</span>
+            <span class="ct ct-lang">PHP</span>
+            <span class="ct ct-lang">JavaScript</span>
+            <span class="ct ct-lang">Python</span>
+            <span class="ct ct-data">PostgreSQL</span>
+            <span class="ct ct-mob">Android</span>
+            <span class="ct ct-mob">iOS</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- RunningBall -->
+      <div class="tl-entry" data-d="320">
+        <div class="tl-dot"></div>
+        <div class="tl-card">
+          <div class="card-top">
+            <div>
+              <div class="company">RunningBall</div>
+              <div class="role">Software Developer / Architect</div>
+              <div class="loc">📍 Graz, Austria</div>
+            </div>
+            <div class="badge">Jan 2012 – Sep 2014 · 2 yrs 9 mo</div>
+          </div>
+          <div class="desc">
+            Developed and architected Java desktop client applications and server-side systems for a real-time sports data platform.
+			Contributed across the full stack — from core application architecture to 3rd-level support — in a fast-moving, reliability-critical environment.
+          </div>
+          <div class="ctags">
+            <span class="ct ct-infra">Frontend</span>
+            <span class="ct ct-infra">Backend</span>
+            <span class="ct ct-infra">Architecture</span>
+            <span class="ct ct-lang">Java</span>
+            <span class="ct ct-data">MSSQL</span>
+            <span class="ct ct-mob">Android</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- FH Joanneum R&D -->
+      <div class="tl-entry" data-d="400">
+        <div class="tl-dot"></div>
+        <div class="tl-card">
+          <div class="card-top">
+            <div>
+              <div class="company">FH Joanneum</div>
+              <div class="role">Software Developer — Research &amp; Development</div>
+              <div class="loc">📍 Graz, Austria</div>
+            </div>
+            <div class="badge">Oct 2011 – Mar 2012 · 6 mo</div>
+          </div>
+          <div class="desc">
+            Microsoft Lync integration for a partner company — embedding the Lync API into SharePoint and web portals. UI design and framework development.
+          </div>
+          <div class="ctags">
+            <span class="ct ct-infra">SharePoint</span>
+            <span class="ct ct-infra">Lync API</span>
+            <span class="ct ct-lang">C#</span>
+            <span class="ct ct-lang">JavaScript</span>
+            <span class="ct ct-lang">HTML / CSS</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- It'sYou -->
+      <div class="tl-entry" data-d="460">
+        <div class="tl-dot"></div>
+        <div class="tl-card">
+          <div class="card-top">
+            <div>
+              <div class="company">It'sYou</div>
+              <div class="role">Developer</div>
+            </div>
+            <div class="badge">2011 – 2012 · 1 yr</div>
+          </div>
+          <div class="desc">AS3 / PHP programming for promotional games and web contests.</div>
+          <div class="ctags">
+            <span class="ct ct-lang">AS3 / Flash</span>
+            <span class="ct ct-lang">PHP</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Netconomy -->
+      <div class="tl-entry" data-d="520">
+        <div class="tl-dot"></div>
+        <div class="tl-card">
+          <div class="card-top">
+            <div>
+              <div class="company">Netconomy Software &amp; Consulting GmbH</div>
+              <div class="role">Software Developer / Intern</div>
+            </div>
+            <div class="badge">Jan 2011 – May 2011 · 5 mo</div>
+          </div>
+          <div class="desc">Web development with Hybris shop system. Web frontend with JSP/JSF.</div>
+          <div class="ctags">
+            <span class="ct ct-infra">Hybris</span>
+            <span class="ct ct-lang">JSP / JSF</span>
+            <span class="ct ct-lang">JavaScript</span>
+            <span class="ct ct-lang">Java EE</span>
+            <span class="ct ct-lang">HTML / CSS</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+</div>
+
+<script>
+  // ── Build Gantt ruler ───────────────────────────────────
+  (function () {
+    const ruler = document.getElementById('ruler');
+    // Jan 2011 = 0,  Feb 2026 = 181 months
+    const start = 2011, end = 2026, total = (end - start) * 12 + 2;
+    for (let yr = start; yr <= end; yr++) {
+      const pct = ((yr - start) * 12) / total * 100;
+      const m = document.createElement('span');
+      m.className = 'yr-mark';
+      m.style.left = pct + '%';
+      //m.textContent = yr === end ? '' : String(yr).slice(2);
+      m.textContent = yr;
+      ruler.appendChild(m);
+    }
+  })();
+
+  // ── Animate timeline entries on scroll ─────────────────
+  const entries = document.querySelectorAll('.tl-entry');
+  const io = new IntersectionObserver(obs => {
+    obs.forEach(e => {
+      if (e.isIntersecting) {
+        const delay = parseInt(e.target.dataset.d || 0);
+        setTimeout(() => e.target.classList.add('vis'), delay);
+        io.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.08 });
+  entries.forEach(e => io.observe(e));
+
+  // ── Animate language bars on scroll ────────────────────
+  const fills = document.querySelectorAll('.fill');
+  const io2 = new IntersectionObserver(obs => {
+    obs.forEach(e => {
+      if (e.isIntersecting) {
+        const el = e.target;
+        el.style.width = (parseFloat(el.style.getPropertyValue('--w') || el.dataset.w) * 100) + '%';
+        el.classList.add('animate');
+        io2.unobserve(el);
+      }
+    });
+  }, { threshold: 0.1 });
+  fills.forEach(f => {
+    // read --w from inline style var trick
+    const w = f.style.cssText.match(/--w:([\d.]+)/);
+    if (w) { f.dataset.w = w[1]; f.style.width = '0'; }
+    io2.observe(f);
+  });
+</script>
+</body>
+</html>
