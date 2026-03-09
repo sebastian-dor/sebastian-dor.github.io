@@ -68,14 +68,18 @@
     }
 
     .avatar {
-      width: 96px; height: 96px;
+      width: 20vh; height: 20vh;
       border-radius: 50%;
-      background: linear-gradient(135deg, var(--accent) 0%, var(--teal) 100%);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 2.2rem; font-weight: 700; color: #fff;
-      letter-spacing: -1px; flex-shrink: 0;
+      flex-shrink: 0;
       box-shadow: 0 0 0 3px rgba(255,255,255,.08), 0 8px 32px rgba(0,0,0,.3);
       z-index: 1;
+      overflow: hidden;
+    }
+
+    .avatar img {
+      width: 100%; height: 100%;
+      object-fit: cover; object-position: center top;
+      display: block;
     }
 
     .header-text { z-index: 1; }
@@ -100,6 +104,33 @@
     }
     .contact:hover { color: var(--accent); }
     .contact svg { width: 13px; height: 13px; fill: currentColor; flex-shrink: 0; }
+
+    /* ── LANGUAGE TOGGLE ─────────────────────────────────── */
+    .lang-toggle {
+      position: absolute;
+      top: 16px; right: 20px;
+      z-index: 2;
+      display: flex;
+      background: rgba(255,255,255,.08);
+      border: 1px solid rgba(255,255,255,.15);
+      border-radius: 6px;
+      overflow: hidden;
+    }
+    .lang-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      font-size: .72rem; font-weight: 700;
+      font-family: 'JetBrains Mono', monospace;
+      letter-spacing: 1.5px;
+      padding: 5px 12px;
+      cursor: pointer;
+      transition: background .2s, color .2s;
+      line-height: 1;
+    }
+    .lang-btn + .lang-btn { border-left: 1px solid rgba(255,255,255,.12); }
+    .lang-btn:hover { color: #fff; }
+    .lang-btn.active { background: var(--accent); color: #fff; }
 
     /* ── SIDEBAR ─────────────────────────────────────────── */
     aside {
@@ -198,12 +229,8 @@
       overflow: hidden;
     }
 
-    .gantt-grid {
-      position: relative;
-      /* 181 months = Jan 2011 → Feb 2026 */
-    }
+    .gantt-grid { position: relative; }
 
-    /* Year ruler */
     .gantt-ruler {
       display: flex;
       position: relative;
@@ -229,10 +256,9 @@
       background: var(--border);
     }
 
-    /* Rows */
     .gantt-rows {
       position: relative;
-      height: 104px; /* 3 rows × 30px + gaps */
+      height: 104px;
     }
 
     .gantt-bar {
@@ -271,7 +297,6 @@
     }
     .gantt-bar:hover .tip { display: block; }
 
-    /* Vertical grid lines at year boundaries */
     .vgrid {
       position: absolute;
       top: 0; bottom: 0;
@@ -358,14 +383,14 @@
       font-size: .69rem; font-family: 'JetBrains Mono', monospace;
       font-weight: 500; padding: 2px 7px; border-radius: 4px;
     }
-    .ct-lang     { background: #fffae6; color: #856100; }
-    .ct-infra  { background: #efefef; color: #444; }
+    .ct-lang  { background: #fffae6; color: #856100; }
+    .ct-infra { background: #efefef; color: #444; }
     .ct-soft  { background: #dbeeff; color: #0063a6; }
-    .ct-cloud  { background: #d8f7f5; color: #00796b; }
-    .ct-cpp    { background: #f0e8ff; color: #5b21b6; }
-    .ct-java   { background: #fff0e6; color: #9a3a00; }
-    .ct-mob    { background: #e6ffe6; color: #155a15; }
-    .ct-data   { background: #ffe6f0; color: #9a0041; }
+    .ct-cloud { background: #d8f7f5; color: #00796b; }
+    .ct-cpp   { background: #f0e8ff; color: #5b21b6; }
+    .ct-java  { background: #fff0e6; color: #9a3a00; }
+    .ct-mob   { background: #e6ffe6; color: #155a15; }
+    .ct-data  { background: #ffe6f0; color: #9a0041; }
 
     /* ── PROFESSIONAL SUMMARY ────────────────────────────── */
     .summary-card {
@@ -377,48 +402,58 @@
       margin-bottom: 36px;
       box-shadow: 0 2px 8px rgba(0,0,0,.05);
     }
-
     .summary-card p {
       font-size: .88rem;
       color: #374151;
       line-height: 1.8;
       margin-bottom: 10px;
     }
-    .summary-card p:last-of-type { margin-bottom: 16px; }
+    .summary-card p:last-of-type { margin-bottom: 0; }
+    .summary-card p strong { color: var(--navy); font-weight: 600; }
 
-    .summary-card p strong {
-      color: var(--navy);
-      font-weight: 600;
+    /* ── PRINT BUTTON ────────────────────────────────────── */
+    .print-btn {
+      position: fixed;
+      bottom: 24px; right: 24px;
+      z-index: 999;
+      background: var(--accent);
+      color: #fff;
+      border: none; border-radius: 8px;
+      padding: 10px 18px;
+      font-size: .82rem; font-weight: 600; font-family: inherit;
+      cursor: pointer;
+      box-shadow: 0 4px 16px rgba(61,155,233,.4);
+      display: flex; align-items: center; gap: 7px;
+      transition: background .2s, transform .15s;
     }
+    .print-btn:hover { background: #2d87d0; transform: translateY(-2px); }
+    .print-btn svg { width: 14px; height: 14px; fill: currentColor; flex-shrink: 0; }
 
-    .summary-strengths {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 7px;
-    }
-
-    .strength-pill {
-      display: inline-flex;
-      align-items: center;
-      gap: 5px;
-      font-size: .73rem;
-      font-weight: 600;
-      padding: 4px 11px;
-      border-radius: 20px;
-      letter-spacing: .2px;
-    }
-    .sp-blue   { background: #dbeeff; color: #1a5fa6; }
-    .sp-teal   { background: #d0f7f4; color: #0d7a72; }
-    .sp-gold   { background: #fff3d6; color: #8a5a00; }
-    .sp-navy   { background: #e4eaf3; color: #1a2636; }
-    .sp-purple { background: #ede9ff; color: #5b21b6; }
-
-    /* ── PRINT ───────────────────────────────────────────── */
+    /* ── PRINT / PDF EXPORT ──────────────────────────────── */
     @media print {
+      *, *::before, *::after {
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+      }
       body { background: #fff; }
-      .page { box-shadow: none; max-width: 100%; }
-      .tl-entry { opacity: 1 !important; transform: none !important; }
-      .fill { transform: scaleX(1) !important; }
+      .page { box-shadow: none; max-width: 100%; min-height: auto; }
+      *, *::before, *::after { transition: none !important; animation: none !important; }
+      .tl-entry  { opacity: 1 !important; transform: none !important; }
+      .fill      { transform: scaleX(1) !important; }
+      .tl-card   { transform: none !important; box-shadow: 0 2px 8px rgba(0,0,0,.05) !important; }
+      .gantt-bar { transform: none !important; filter: none !important; }
+      .tip        { display: none !important; }
+      .print-btn  { display: none !important; }
+      .lang-toggle { display: none !important; }
+      .tl-entry.current .tl-dot {
+        animation: none !important;
+        box-shadow: 0 0 0 4px var(--accent-dim) !important;
+      }
+      header        { break-inside: avoid; }
+      .gantt-wrap   { break-inside: avoid; }
+      .summary-card { break-inside: avoid; }
+      .tl-entry     { break-inside: avoid; }
+      .tl-card      { break-inside: avoid; }
       @page { margin: 1.2cm; size: A4; }
     }
 
@@ -427,6 +462,7 @@
       .page { grid-template-columns: 1fr; }
       header { flex-direction: column; text-align: center; }
       .header-contacts { justify-content: center; }
+      .lang-toggle { position: static; margin: 12px auto 0; }
     }
   </style>
 </head>
@@ -435,10 +471,10 @@
 
   <!-- ══ HEADER ══════════════════════════════════════════ -->
   <header>
-    <div class="avatar">SD</div>
+    <div class="avatar"><img src="headshot.png" alt="Sebastian Dorfer"></div>
     <div class="header-text">
       <h1>Sebastian Dorfer</h1>
-      <div class="header-title">Principal Architect &amp; Cloud Platform Engineer</div>
+      <div class="header-title" data-i18n="header.title">Principal Architect &amp; Cloud Platform Engineer</div>
       <div class="header-contacts">
         <a class="contact" href="mailto:sebastian.d.dorfer@gmail.com">
           <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
@@ -450,38 +486,46 @@
         </a>
         <span class="contact">
           <svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 110-5 2.5 2.5 0 010 5z"/></svg>
-          Vienna / Graz, Austria
+          <span data-i18n="header.location">Vienna / Graz, Austria</span>
         </span>
       </div>
+    </div>
+
+    <!-- Language toggle -->
+    <div class="lang-toggle">
+      <button class="lang-btn active" data-lang="en" onclick="setLang('en')">EN</button>
+      <button class="lang-btn"        data-lang="de" onclick="setLang('de')">DE</button>
     </div>
   </header>
 
   <!-- ══ SIDEBAR ══════════════════════════════════════════ -->
   <aside>
     <div>
-      <div class="s-title">About</div>
-      <p class="summary">
+      <div class="s-title" data-i18n="about.title">About</div>
+      <p class="summary" data-i18n="about.text">
         Principal Architect who takes ownership of hard problems and sees them through — with technical rigour, full accountability, and uncompromising integrity.
         <strong>Led teams. Built departments. Shipped solutions.</strong>
       </p>
     </div>
 
     <div>
-      <div class="s-title">Skills</div>
+      <div class="s-title" data-i18n="skills.title">Skills</div>
       <div class="skill-group">
         <div class="skill-group-label"></div>
         <div class="tags">
-          <span class="stag">Teamlead</span><span class="stag">Strategy</span>
-          <span class="stag">Security</span><span class="stag">Development-Processes</span>
+          <span class="stag" data-i18n="stag.teamlead">Teamlead</span>
+          <span class="stag" data-i18n="stag.strategy">Strategy</span>
+          <span class="stag">Security</span>
+          <span class="stag" data-i18n="stag.devproc">Development-Processes</span>
           <span class="stag">Agile/Scrum</span><span class="stag">Devops</span>
-		  <span class="stag">Deployments</span><span class="stag">Monitoring</span>
+          <span class="stag">Deployments</span><span class="stag">Monitoring</span>
         </div>
       </div>
       <div class="skill-group">
-        <div class="skill-group-label">Languages &amp; Frameworks</div>
+        <div class="skill-group-label" data-i18n="skills.langs-fw">Languages &amp; Frameworks</div>
         <div class="tags">
           <span class="stag">C++</span><span class="stag">Java</span>
-		  <span class="stag">C#</span><span class="stag">Python</span>
+          <span class="stag">C#</span><span class="stag">Python</span>
           <span class="stag">HTML/CSS</span><span class="stag">PHP</span>
           <span class="stag">TypeScript</span><span class="stag">JavaScript</span>
           <span class="stag">Bash/Powershell</span><span class="stag">Dart/Flutter</span>
@@ -489,7 +533,7 @@
         </div>
       </div>
       <div class="skill-group">
-        <div class="skill-group-label">Infrastructure</div>
+        <div class="skill-group-label" data-i18n="skills.infra">Infrastructure</div>
         <div class="tags">
           <span class="stag">Linux</span><span class="stag">Windows Server</span>
           <span class="stag">PostgreSQL</span><span class="stag">MSSQL</span>
@@ -498,57 +542,70 @@
           <span class="stag">Powerplatform</span><span class="stag">Azure Devops</span>
           <span class="stag">SAP HANA</span><span class="stag">Mendix</span>
           <span class="stag">Atlassian</span><span class="stag">Adobe Suite</span>
-          
         </div>
       </div>
-
     </div>
 
     <div>
-      <div class="s-title">Languages</div>
+      <div class="s-title" data-i18n="langs.title">Languages</div>
       <div class="lang">
-        <div class="lang-row"><span>German</span><span>Native</span></div>
+        <div class="lang-row">
+          <span data-i18n="lang.de">German</span>
+          <span data-i18n="lang.de.level">Native</span>
+        </div>
         <div class="bar"><div class="fill" style="--w:1"></div></div>
       </div>
       <div class="lang">
-        <div class="lang-row"><span>English</span><span>Full Professional</span></div>
+        <div class="lang-row">
+          <span data-i18n="lang.en">English</span>
+          <span data-i18n="lang.en.level">Full Professional</span>
+        </div>
         <div class="bar"><div class="fill" style="--w:.85"></div></div>
       </div>
       <div class="lang">
-        <div class="lang-row"><span>French</span><span>Basic</span></div>
+        <div class="lang-row">
+          <span data-i18n="lang.fr">French</span>
+          <span data-i18n="lang.fr.level">Basic</span>
+        </div>
         <div class="bar"><div class="fill" style="--w:.3"></div></div>
       </div>
       <div class="lang">
-        <div class="lang-row"><span>Spanish</span><span>Elementary</span></div>
+        <div class="lang-row">
+          <span data-i18n="lang.es">Spanish</span>
+          <span data-i18n="lang.es.level">Elementary</span>
+        </div>
         <div class="bar"><div class="fill" style="--w:.2"></div></div>
       </div>
       <div class="lang">
-        <div class="lang-row"><span>Japanese</span><span>Elementary</span></div>
+        <div class="lang-row">
+          <span data-i18n="lang.jp">Japanese</span>
+          <span data-i18n="lang.jp.level">Elementary</span>
+        </div>
         <div class="bar"><div class="fill" style="--w:.15"></div></div>
       </div>
     </div>
 
     <div>
-      <div class="s-title">Education</div>
+      <div class="s-title" data-i18n="edu.title">Education</div>
       <div class="edu-item">
         <div class="edu-inst">FH Joanneum</div>
-        <div class="edu-deg">BSc Information Management</div>
-        <div class="edu-yr">2008 – 2012</div>
+        <div class="edu-deg" data-i18n="edu.fhj.deg">BSc Information Management</div>
+        <div class="edu-yr">2008 - 2012</div>
       </div>
       <div class="edu-item">
         <div class="edu-inst">Karl-Franzens-Universität Graz</div>
-        <div class="edu-deg">Business Studies</div>
-        <div class="edu-yr">2007 – 2008</div>
-      </div>      
-	  <div class="edu-item">
-        <div class="edu-inst">Military Service</div>
-        <div class="edu-deg">Mandatory and Militia</div>
-        <div class="edu-yr">2006 – 2007</div>
+        <div class="edu-deg" data-i18n="edu.kfu.deg">Business Studies</div>
+        <div class="edu-yr">2007 - 2008</div>
+      </div>
+      <div class="edu-item">
+        <div class="edu-inst" data-i18n="edu.mil.inst">Military Service</div>
+        <div class="edu-deg"  data-i18n="edu.mil.deg">Mandatory and Militia</div>
+        <div class="edu-yr">2006 - 2007</div>
       </div>
       <div class="edu-item">
         <div class="edu-inst">HTL Ortwein</div>
-        <div class="edu-deg">Diploma, Graphic &amp; Communication Design</div>
-        <div class="edu-yr">2002 – 2006</div>
+        <div class="edu-deg" data-i18n="edu.htl.deg">Diploma, Graphic &amp; Communication Design</div>
+        <div class="edu-yr">2002 - 2006</div>
       </div>
     </div>
   </aside>
@@ -557,16 +614,16 @@
   <main>
 
     <!-- ── PROFESSIONAL SUMMARY ───────────────────────── -->
-    <div class="section-heading">Professional Summary</div>
+    <div class="section-heading" data-i18n="sec.summary">Professional Summary</div>
     <div class="summary-card">
-      <p>
+      <p data-i18n="summary.p1">
         Principal Architect with <strong>15+ years</strong> delivering production-grade platforms — from
         real-time sports data engines and cross-platform mobile games to industrial IoT cloud infrastructure
         serving <strong>millions of edge devices</strong>. Trusted to take full ownership of complex,
         ambiguous problems and see them through with <strong>technical integrity and end-to-end accountability</strong>,
         from whiteboard to live system.
       </p>
-      <p>
+      <p data-i18n="summary.p2">
         Repeatedly chosen to <strong>lead engineering teams and build IT departments from the ground up</strong>,
         combining long-horizon strategic thinking with hands-on execution. Brings clarity to architecture
         decisions, mentors engineers, and holds the line on quality — even under pressure.
@@ -574,101 +631,82 @@
     </div>
 
     <!-- ── GANTT CHART ─────────────────────────────────── -->
-    <div class="section-heading">Career Timeline</div>
+    <div class="section-heading" data-i18n="sec.timeline">Career Timeline</div>
     <div class="gantt-wrap">
       <div class="gantt-grid" id="gantt">
-        <!-- Ruler is injected by JS -->
         <div class="gantt-ruler" id="ruler"></div>
-        <!-- Rows -->
         <div class="gantt-rows" id="gantt-rows">
-          <!--
-            Scale: Jan 2011 = 0  →  Feb 2026 = 181 months
-            left  = (start_month / 181) * 100%
-            width = (duration_months / 181) * 100%
-
-            Row heights (top):
-              row 0 =  0px  (main career track)
-              row 1 = 34px  (parallel early 2011-2012)
-              row 2 = 68px  (parallel early 2011)
-          -->
 
           <!-- Row 0 ─ main track -->
-          <div class="gantt-bar" title="Netconomy (Jan–May 2011)"
-            style="left:0%;width:2.2%;top:0;
-                   background:linear-gradient(90deg,#6b7280,#9ca3af)">
-            <span class="tip">Netconomy · Jan–May 2011</span>
+          <div class="gantt-bar"
+            style="left:0%;width:2.2%;top:0;background:linear-gradient(90deg,#6b7280,#9ca3af)">
+            <span class="tip" data-i18n="tip.netco">Netconomy · Jan-May 2011</span>
           </div>
-          <div class="gantt-bar" title="RunningBall (Jan 2012–Sep 2014)"
-            style="left:6.6%;width:17.7%;top:0;
-                   background:linear-gradient(90deg,#7c3aed,#9d5fd1)">
+          <div class="gantt-bar"
+            style="left:6.6%;width:17.7%;top:0;background:linear-gradient(90deg,#7c3aed,#9d5fd1)">
             RunningBall
-            <span class="tip">RunningBall · 2012–2014</span>
+            <span class="tip">RunningBall · 2012-2014</span>
           </div>
-          <div class="gantt-bar" title="NOVOMATIC (Feb 2015–Mar 2018)"
-            style="left:27.1%;width:20.4%;top:0;
-                   background:linear-gradient(90deg,#0284c7,#38bdf8)">
+          <div class="gantt-bar"
+            style="left:27.1%;width:20.4%;top:0;background:linear-gradient(90deg,#0284c7,#38bdf8)">
             Cervo Media
-            <span class="tip">NOVOMATIC / Cervo Media · 2015–2018</span>
+            <span class="tip">NOVOMATIC / Cervo Media · 2015-2018</span>
           </div>
-          <div class="gantt-bar" title="ANDRITZ (Apr 2018–Jan 2022)"
-            style="left:48.1%;width:24.9%;top:0;
-                   background:linear-gradient(90deg,#059669,#34d399)">
+          <div class="gantt-bar"
+            style="left:48.1%;width:24.9%;top:0;background:linear-gradient(90deg,#059669,#34d399)">
             ANDRITZ
-            <span class="tip">ANDRITZ · Apr 2018–Jan 2022</span>
+            <span class="tip">ANDRITZ · Apr 2018-Jan 2022</span>
           </div>
-          <div class="gantt-bar" title="Arteria Technologies (Jan 2022–Oct 2024)"
-            style="left:72.9%;width:18.2%;top:0;
-                   background:linear-gradient(90deg,#d97706,#f59e0b)">
+          <div class="gantt-bar"
+            style="left:72.9%;width:18.2%;top:0;background:linear-gradient(90deg,#d97706,#f59e0b)">
             Arteria
-            <span class="tip">Arteria Technologies · 2022–2024</span>
+            <span class="tip">Arteria Technologies · 2022-2024</span>
           </div>
-          <div class="gantt-bar" title="ZYNE / TTTech (Nov 2024–Present)"
+          <div class="gantt-bar"
             style="left:91.7%;width:8.3%;top:0;
                    background:linear-gradient(90deg,#dc2626,#ef4444);
                    box-shadow:0 0 10px rgba(239,68,68,.4)">
             ZYNE
-            <span class="tip">ZYNE · Nov 2024–Present</span>
+            <span class="tip" data-i18n="tip.zyne">ZYNE · Nov 2024-Present</span>
           </div>
 
           <!-- Row 1 ─ parallel 2011-2012 -->
-          <div class="gantt-bar" title="It'sYou (2011–2012)"
-            style="left:0%;width:13.3%;top:34px;
-                   background:linear-gradient(90deg,#475569,#64748b)">
+          <div class="gantt-bar"
+            style="left:0%;width:13.3%;top:34px;background:linear-gradient(90deg,#475569,#64748b)">
             It'sYou
-            <span class="tip">It'sYou · 2011–2012</span>
+            <span class="tip">It'sYou · 2011-2012</span>
           </div>
 
-          <!-- Row 2 ─ parallel Oct 2011 – Mar 2012 -->
-          <div class="gantt-bar" title="FH Joanneum R&D (Oct 2011–Mar 2012)"
-            style="left:5%;width:2.8%;top:68px;
-                   background:linear-gradient(90deg,#1e40af,#3b82f6)">
-            <span class="tip">FH Joanneum R&D · Oct 2011–Mar 2012</span>
+          <!-- Row 2 ─ parallel Oct 2011 - Mar 2012 -->
+          <div class="gantt-bar"
+            style="left:5%;width:2.8%;top:68px;background:linear-gradient(90deg,#1e40af,#3b82f6)">
+            <span class="tip" data-i18n="tip.fhj">FH Joanneum R&amp;D · Oct 2011-Mar 2012</span>
           </div>
 
-          <!-- vertical grid lines for year marks -->
+          <!-- vertical grid lines -->
           <div class="vgrid" style="left:0%"></div>
-          <div class="vgrid" style="left:6.6%"></div>   <!-- 2012 -->
-          <div class="vgrid" style="left:19.9%"></div>  <!-- 2014 -->
-          <div class="vgrid" style="left:26.5%"></div>  <!-- 2015 -->
-          <div class="vgrid" style="left:39.8%"></div>  <!-- 2017 -->
-          <div class="vgrid" style="left:46.4%"></div>  <!-- 2018 -->
-          <div class="vgrid" style="left:59.7%"></div>  <!-- 2020 -->
-          <div class="vgrid" style="left:72.9%"></div>  <!-- 2022 -->
-          <div class="vgrid" style="left:86.2%"></div>  <!-- 2024 -->
+          <div class="vgrid" style="left:6.6%"></div>
+          <div class="vgrid" style="left:19.9%"></div>
+          <div class="vgrid" style="left:26.5%"></div>
+          <div class="vgrid" style="left:39.8%"></div>
+          <div class="vgrid" style="left:46.4%"></div>
+          <div class="vgrid" style="left:59.7%"></div>
+          <div class="vgrid" style="left:72.9%"></div>
+          <div class="vgrid" style="left:86.2%"></div>
           <div class="vgrid" style="left:100%"></div>
         </div>
 
-        <!-- Row labels -->
         <div style="display:flex;gap:16px;margin-top:10px;flex-wrap:wrap">
           <div style="font-size:.68rem;color:var(--accent);display:flex;align-items:center;gap:5px;font-weight:600">
-            <span style="display:inline-block;width:10px;height:3px;background:#ef4444;border-radius:2px;box-shadow:0 0 4px rgba(239,68,68,.6)"></span>Current position
+            <span style="display:inline-block;width:10px;height:3px;background:#ef4444;border-radius:2px;box-shadow:0 0 4px rgba(239,68,68,.6)"></span>
+            <span data-i18n="timeline.legend">Current position</span>
           </div>
         </div>
       </div>
     </div>
 
     <!-- ── VERTICAL TIMELINE ───────────────────────────── -->
-    <div class="section-heading">Experience</div>
+    <div class="section-heading" data-i18n="sec.experience">Experience</div>
     <div class="timeline">
 
       <!-- ZYNE -->
@@ -678,19 +716,19 @@
           <div class="card-top">
             <div>
               <div class="company">ZYNE · TTTech</div>
-              <div class="role">Principal Product Architect</div>
-              <div class="loc">📍 Vienna, Austria</div>
+              <div class="role" data-i18n="zyne.role">Principal Product Architect</div>
+              <div class="loc"  data-i18n="zyne.loc">📍 Vienna, Austria</div>
             </div>
-            <div class="badge">Nov 2024 – Present · 1 yr 3 mo</div>
+            <div class="badge" data-i18n="zyne.badge">Nov 2024 - Present · 1 yr 3 mo</div>
           </div>
-          <div class="desc">
+          <div class="desc" data-i18n="zyne.desc">
             Principal Cloud Platform Architect for an IoT data platform supporting millions of edge devices with hundreds of sensors each.
-			Ingesting and transforming terabytes of data in parallel in a highly secure environment.
-			Strategic technical decisions for ISO 27001 certified and NIS2 ready cloud platform.
+            Ingesting and transforming terabytes of data in parallel in a highly secure environment.
+            Strategic technical decisions for ISO 27001 certified and NIS2 ready cloud platform.
           </div>
           <div class="ctags">
-            <span class="ct ct-soft">IT Leadership</span>
-            <span class="ct ct-soft">Strategy</span>
+            <span class="ct ct-soft" data-i18n="ct.it-lead">IT Leadership</span>
+            <span class="ct ct-soft" data-i18n="ct.strategy">Strategy</span>
             <span class="ct ct-infra">Security</span>
             <span class="ct ct-infra">IoT Platform</span>
             <span class="ct ct-infra">Azure</span>
@@ -711,26 +749,25 @@
           <div class="card-top">
             <div>
               <div class="company">Arteria Technologies</div>
-              <div class="role">Head of Information Technology</div>
-              <div class="loc">📍 Graz, Styria, Austria</div>
+              <div class="role" data-i18n="arteria.role">Head of Information Technology</div>
+              <div class="loc"  data-i18n="arteria.loc">📍 Graz, Styria, Austria</div>
             </div>
-            <div class="badge">Jan 2022 – Oct 2024 · 2 yrs 10 mo</div>
+            <div class="badge" data-i18n="arteria.badge">Jan 2022 - Oct 2024 · 2 yrs 10 mo</div>
           </div>
-		  <div class="desc">
+          <div class="desc" data-i18n="arteria.desc">
             Built up the company with founder and scaled solution from prototype to productive environment. Lead software and research teams and managed infrastructure.
           </div>
           <div class="ctags">
-            <span class="ct ct-soft">IT Leadership</span>
-            <span class="ct ct-soft">Strategy</span>
+            <span class="ct ct-soft" data-i18n="ct.it-lead">IT Leadership</span>
+            <span class="ct ct-soft" data-i18n="ct.strategy">Strategy</span>
             <span class="ct ct-infra">Azure</span>
             <span class="ct ct-data">Databricks</span>
             <span class="ct ct-data">PostgreSQL</span>
             <span class="ct ct-data">InfluxDB</span>
-            <span class="ct ct-cloud">Digital Transformation</span>
+            <span class="ct ct-cloud" data-i18n="ct.digital-trans">Digital Transformation</span>
             <span class="ct ct-lang">PHP</span>
             <span class="ct ct-lang">Typescript</span>
             <span class="ct ct-lang">React</span>
-			<span class="ct ct-lang">Python</span>
           </div>
         </div>
       </div>
@@ -742,18 +779,18 @@
           <div class="card-top">
             <div>
               <div class="company">ANDRITZ</div>
-              <div class="role">Specialist, Enterprise Content Management</div>
-              <div class="loc">📍 Graz, Austria</div>
+              <div class="role" data-i18n="andritz.role">Specialist, Enterprise Content Management</div>
+              <div class="loc"  data-i18n="andritz.loc">📍 Graz, Austria</div>
             </div>
-            <div class="badge">Apr 2018 – Jan 2022 · 3 yrs 10 mo</div>
+            <div class="badge" data-i18n="andritz.badge">Apr 2018 - Jan 2022 · 3 yrs 10 mo</div>
           </div>
-          <div class="desc">
+          <div class="desc" data-i18n="andritz.desc">
             Development team lead and software architect within a global engineering organisation.
-			Owned the SAP HANA cloud platform service and led adoption of Mendix low-code for internal tooling.
-			Drove digital transformation initiatives across full-stack web and mobile — spanning Azure cloud development, Node.js backends, and SharePoint.
+            Owned the SAP HANA cloud platform service and led adoption of Mendix low-code for internal tooling.
+            Drove digital transformation initiatives across full-stack web and mobile — spanning Azure cloud development, Node.js backends, and SharePoint.
           </div>
           <div class="ctags">
-            <span class="ct ct-soft">Teamlead</span>
+            <span class="ct ct-soft" data-i18n="ct.teamlead">Teamlead</span>
             <span class="ct ct-infra">Azure</span>
             <span class="ct ct-infra">SAP HANA</span>
             <span class="ct ct-infra">Mendix</span>
@@ -775,14 +812,14 @@
           <div class="card-top">
             <div>
               <div class="company">NOVOMATIC / Cervo Media GmbH</div>
-              <div class="role">Mobile Games Developer / Head of IT</div>
-              <div class="loc">📍 Graz, Austria</div>
+              <div class="role" data-i18n="novo.role">Mobile Games Developer / Head of IT</div>
+              <div class="loc"  data-i18n="novo.loc">📍 Graz, Austria</div>
             </div>
-            <div class="badge">Feb 2015 – Mar 2018 · 3 yrs 2 mo</div>
+            <div class="badge" data-i18n="novo.badge">Feb 2015 - Mar 2018 · 3 yrs 2 mo</div>
           </div>
-          <div class="desc">
+          <div class="desc" data-i18n="novo.desc">
             Built cross-platform mobile games in C++ for Android and iOS under the NOVOMATIC umbrella.
-			Simultaneously served as Head of IT at Cervo Media — responsible for backend and frontend development, Windows and Linux server administration, Azure infrastructure, PostgreSQL, and network security end-to-end.
+            Simultaneously served as Head of IT at Cervo Media — responsible for backend and frontend development, Windows and Linux server administration, Azure infrastructure, PostgreSQL, and network security end-to-end.
           </div>
           <div class="ctags">
             <span class="ct ct-infra">Azure</span>
@@ -806,19 +843,19 @@
           <div class="card-top">
             <div>
               <div class="company">RunningBall</div>
-              <div class="role">Software Developer / Architect</div>
-              <div class="loc">📍 Graz, Austria</div>
+              <div class="role" data-i18n="rb.role">Software Developer / Architect</div>
+              <div class="loc"  data-i18n="rb.loc">📍 Graz, Austria</div>
             </div>
-            <div class="badge">Jan 2012 – Sep 2014 · 2 yrs 9 mo</div>
+            <div class="badge" data-i18n="rb.badge">Jan 2012 - Sep 2014 · 2 yrs 9 mo</div>
           </div>
-          <div class="desc">
+          <div class="desc" data-i18n="rb.desc">
             Developed and architected Java desktop client applications and server-side systems for a real-time sports data platform.
-			Contributed across the full stack — from core application architecture to 3rd-level support — in a fast-moving, reliability-critical environment.
+            Contributed across the full stack — from core application architecture to 3rd-level support — in a fast-moving, reliability-critical environment.
           </div>
           <div class="ctags">
             <span class="ct ct-infra">Frontend</span>
             <span class="ct ct-infra">Backend</span>
-            <span class="ct ct-infra">Architecture</span>
+            <span class="ct ct-infra" data-i18n="ct.architecture">Architecture</span>
             <span class="ct ct-lang">Java</span>
             <span class="ct ct-data">MSSQL</span>
             <span class="ct ct-mob">Android</span>
@@ -833,12 +870,12 @@
           <div class="card-top">
             <div>
               <div class="company">FH Joanneum</div>
-              <div class="role">Software Developer — Research &amp; Development</div>
-              <div class="loc">📍 Graz, Austria</div>
+              <div class="role" data-i18n="fhj.role">Software Developer — Research &amp; Development</div>
+              <div class="loc"  data-i18n="fhj.loc">📍 Graz, Austria</div>
             </div>
-            <div class="badge">Oct 2011 – Mar 2012 · 6 mo</div>
+            <div class="badge" data-i18n="fhj.badge">Oct 2011 - Mar 2012 · 6 mo</div>
           </div>
-          <div class="desc">
+          <div class="desc" data-i18n="fhj.desc">
             Microsoft Lync integration for a partner company — embedding the Lync API into SharePoint and web portals. UI design and framework development.
           </div>
           <div class="ctags">
@@ -858,11 +895,11 @@
           <div class="card-top">
             <div>
               <div class="company">It'sYou</div>
-              <div class="role">Developer</div>
+              <div class="role" data-i18n="itsyou.role">Developer</div>
             </div>
-            <div class="badge">2011 – 2012 · 1 yr</div>
+            <div class="badge" data-i18n="itsyou.badge">2011 - 2012 · 1 yr</div>
           </div>
-          <div class="desc">AS3 / PHP programming for promotional games and web contests.</div>
+          <div class="desc" data-i18n="itsyou.desc">AS3 / PHP programming for promotional games and web contests.</div>
           <div class="ctags">
             <span class="ct ct-lang">AS3 / Flash</span>
             <span class="ct ct-lang">PHP</span>
@@ -877,11 +914,11 @@
           <div class="card-top">
             <div>
               <div class="company">Netconomy Software &amp; Consulting GmbH</div>
-              <div class="role">Software Developer / Intern</div>
+              <div class="role" data-i18n="netco.role">Software Developer / Intern</div>
             </div>
-            <div class="badge">Jan 2011 – May 2011 · 5 mo</div>
+            <div class="badge" data-i18n="netco.badge">Jan 2011 - May 2011 · 5 mo</div>
           </div>
-          <div class="desc">Web development with Hybris shop system. Web frontend with JSP/JSF.</div>
+          <div class="desc" data-i18n="netco.desc">Web development with Hybris shop system. Web frontend with JSP/JSF.</div>
           <div class="ctags">
             <span class="ct ct-infra">Hybris</span>
             <span class="ct ct-lang">JSP / JSF</span>
@@ -896,24 +933,190 @@
   </main>
 </div>
 
+<button class="print-btn" onclick="window.print()">
+  <svg viewBox="0 0 24 24"><path d="M19 8H5c-1.66 0-3 1.34-3 3v6h4v4h12v-4h4v-6c0-1.66-1.34-3-3-3zm-3 11H8v-5h8v5zm3-7c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1zm-1-9H6v4h12V3z"/></svg>
+  <span data-i18n="print.btn">Print / Export PDF</span>
+</button>
+
 <script>
-  // ── Build Gantt ruler ───────────────────────────────────
+  // ── Translations ─────────────────────────────────────────
+  const i18n = {
+    en: {
+      'header.title':     'Principal Architect &amp; Cloud Platform Engineer',
+      'header.location':  'Graz, Austria',
+      'about.title':      'About',
+      'about.text':       'Principal Architect who takes ownership of hard problems and sees them through — with technical rigour, full accountability, and uncompromising integrity.<strong>Led teams. Built departments. Shipped solutions.</strong>',
+      'skills.title':     'Skills',
+      'skills.langs-fw':  'Languages &amp; Frameworks',
+      'skills.infra':     'Infrastructure',
+      'stag.teamlead':    'Teamlead',
+      'stag.strategy':    'Strategy',
+      'stag.devproc':     'Development-Processes',
+      'langs.title':      'Languages',
+      'lang.de':          'German',      'lang.de.level':    'Native',
+      'lang.en':          'English',     'lang.en.level':    'Full Professional',
+      'lang.fr':          'French',      'lang.fr.level':    'Basic',
+      'lang.es':          'Spanish',     'lang.es.level':    'Elementary',
+      'lang.jp':          'Japanese',    'lang.jp.level':    'Elementary',
+      'edu.title':        'Education',
+      'edu.fhj.deg':      'BSc Information Management',
+      'edu.kfu.deg':      'Business Studies',
+      'edu.mil.inst':     'Military Service',
+      'edu.mil.deg':      'Mandatory and Militia',
+      'edu.htl.deg':      'Diploma, Graphic &amp; Communication Design',
+      'sec.summary':      'Professional Summary',
+      'summary.p1':       'Principal Architect with <strong>15+ years</strong> delivering production-grade platforms — from real-time sports data engines and cross-platform mobile games to industrial IoT cloud infrastructure serving <strong>millions of edge devices</strong>. Trusted to take full ownership of complex, ambiguous problems and see them through with <strong>technical integrity and end-to-end accountability</strong>, from whiteboard to live system.',
+      'summary.p2':       'Repeatedly chosen to <strong>lead engineering teams and build IT departments from the ground up</strong>, combining long-horizon strategic thinking with hands-on execution. Brings clarity to architecture decisions, mentors engineers, and holds the line on quality — even under pressure.',
+      'sec.timeline':     'Career Timeline',
+      'timeline.legend':  'Current position',
+      'sec.experience':   'Experience',
+      'tip.netco':        'Netconomy · Jan-May 2011',
+      'tip.zyne':         'ZYNE · Nov 2024-Present',
+      'tip.fhj':          'FH Joanneum R&amp;D · Oct 2011-Mar 2012',
+      'zyne.role':        'Principal Product Architect',
+      'zyne.loc':         '📍 Vienna, Austria',
+      'zyne.badge':       'Nov 2024 - Present · 1 yr 3 mo',
+      'zyne.desc':        'Principal Cloud Platform Architect for an IoT data platform supporting millions of edge devices with hundreds of sensors each. Ingesting and transforming terabytes of data in parallel in a highly secure environment. Strategic technical decisions for ISO 27001 certified and NIS2 ready cloud platform.',
+      'ct.it-lead':       'IT Leadership',
+      'ct.strategy':      'Strategy',
+      'ct.digital-trans': 'Digital Transformation',
+      'ct.teamlead':      'Teamlead',
+      'ct.architecture':  'Architecture',
+      'arteria.role':     'Head of Information Technology',
+      'arteria.loc':      '📍 Graz, Styria, Austria',
+      'arteria.badge':    'Jan 2022 - Oct 2024 · 2 yrs 10 mo',
+      'arteria.desc':     'Built up the company with founder and scaled solution from prototype to productive environment. Lead software and research teams and managed infrastructure.',
+      'andritz.role':     'Specialist, Enterprise Content Management',
+      'andritz.loc':      '📍 Graz, Austria',
+      'andritz.badge':    'Apr 2018 - Jan 2022 · 3 yrs 10 mo',
+      'andritz.desc':     'Development team lead and software architect within a global engineering organisation. Owned the SAP HANA cloud platform service and led adoption of Mendix low-code for internal tooling. Drove digital transformation initiatives across full-stack web and mobile — spanning Azure cloud development, Node.js backends, and SharePoint.',
+      'novo.role':        'Mobile Games Developer / Head of IT',
+      'novo.loc':         '📍 Graz, Austria',
+      'novo.badge':       'Feb 2015 - Mar 2018 · 3 yrs 2 mo',
+      'novo.desc':        'Built cross-platform mobile games in C++ for Android and iOS under the NOVOMATIC umbrella. Simultaneously served as Head of IT at Cervo Media — responsible for backend and frontend development, Windows and Linux server administration, Azure infrastructure, PostgreSQL, and network security end-to-end.',
+      'rb.role':          'Software Developer / Architect',
+      'rb.loc':           '📍 Graz, Austria',
+      'rb.badge':         'Jan 2012 - Sep 2014 · 2 yrs 9 mo',
+      'rb.desc':          'Developed and architected Java desktop client applications and server-side systems for a real-time sports data platform. Contributed across the full stack — from core application architecture to 3rd-level support — in a fast-moving, reliability-critical environment.',
+      'fhj.role':         'Software Developer — Research &amp; Development',
+      'fhj.loc':          '📍 Graz, Austria',
+      'fhj.badge':        'Oct 2011 - Mar 2012 · 6 mo',
+      'fhj.desc':         'Microsoft Lync integration for a partner company — embedding the Lync API into SharePoint and web portals. UI design and framework development.',
+      'itsyou.role':      'Developer',
+      'itsyou.badge':     '2011 - 2012 · 1 yr',
+      'itsyou.desc':      'AS3 / PHP programming for promotional games and web contests.',
+      'netco.role':       'Software Developer / Intern',
+      'netco.badge':      'Jan 2011 - May 2011 · 5 mo',
+      'netco.desc':       'Web development with Hybris shop system. Web frontend with JSP/JSF.',
+      'print.btn':        'Print / Export PDF',
+    },
+    de: {
+      'header.title':     'Principal Architect &amp; Cloud-Plattformingenieur',
+      'header.location':  'Wien / Graz, Österreich',
+      'about.title':      'Über mich',
+      'about.text':       'Principal Architect, der schwierige Probleme in die Hand nimmt und konsequent umsetzt - mit technischer Präzision, voller Verantwortung und kompromissloser Integrität.<strong>Teams geführt. Abteilungen aufgebaut. Lösungen geliefert.</strong>',
+      'skills.title':     'Kenntnisse',
+      'skills.langs-fw':  'Sprachen &amp; Frameworks',
+      'skills.infra':     'Infrastruktur',
+      'stag.teamlead':    'Teamleitung',
+      'stag.strategy':    'Strategie',
+      'stag.devproc':     'Entwicklungsprozesse',
+      'langs.title':      'Sprachen',
+      'lang.de':          'Deutsch',     'lang.de.level':    'Muttersprache',
+      'lang.en':          'Englisch',    'lang.en.level':    'Verhandlungssicher',
+      'lang.fr':          'Französisch', 'lang.fr.level':    'Grundkenntnisse',
+      'lang.es':          'Spanisch',    'lang.es.level':    'Elementar',
+      'lang.jp':          'Japanisch',   'lang.jp.level':    'Elementar',
+      'edu.title':        'Ausbildung',
+      'edu.fhj.deg':      'BSc Informationsmanagement',
+      'edu.kfu.deg':      'Betriebswirtschaft',
+      'edu.mil.inst':     'Präsenzdienst',
+      'edu.mil.deg':      'Grundwehr- und Milizpräsenzdienst',
+      'edu.htl.deg':      'Diplom, Grafik- &amp; Kommunikationsdesign',
+      'sec.summary':      'Berufliches Profil',
+      'summary.p1':       'Principal Architect mit <strong>15+ Jahren</strong> Erfahrung in der Umsetzung produktionsreifer Plattformen - von Echtzeit-Sportdatenübertragung und plattformübergreifenden Mobile Games bis hin zu industrieller IoT-Cloud-Infrastruktur für <strong>Millionen von Edge-Geräten</strong>. Vertrauenswürdiger Ansprechpartner für komplexe, vielschichtige Probleme mit vollständiger Eigenverantwortung und <strong>technischer Integrität sowie End-to-End-Verantwortung</strong> - vom Whiteboard bis zum Live-System.',
+      'summary.p2':       'Verantwortung übernommen, <strong>Engineering-Teams zu leiten und IT-Abteilungen von Grund auf aufzubauen</strong> - langfristiges strategisches Denken mit praktischer Umsetzung kombiniert. Schafft Klarheite bei Architekturentscheidungen, leitet Softwareentwicklungsteams und hält den Qualitätsstandard - auch unter Druck.',
+      'sec.timeline':     'Karriereübersicht',
+      'timeline.legend':  'Aktuelle Position',
+      'sec.experience':   'Berufserfahrung',
+      'tip.netco':        'Netconomy · Jan-Mai 2011',
+      'tip.zyne':         'ZYNE · Nov 2024-Heute',
+      'tip.fhj':          'FH Joanneum F&amp;E · Okt 2011-Mär 2012',
+      'zyne.role':        'Principal Product Architect',
+      'zyne.loc':         '📍 Wien, Österreich',
+      'zyne.badge':       'Nov 2024 - Heute · 1 J. 3 Mo.',
+      'zyne.desc':        'Principal Cloud-Plattform-Architekt für eine IoT-Datenplattform, die Millionen von Edge-Geräten mit jeweils hunderten Sensoren versorgt. Parallelisiertes Einlesen und Transformation von Terabytes an Daten in einer hochsicheren Umgebung. Strategische Technologieentscheidungen für eine ISO 27001-zertifizierte und NIS2-konforme Cloud-Plattform.',
+      'ct.it-lead':       'IT-Leitung',
+      'ct.strategy':      'Strategie',
+      'ct.digital-trans': 'Digitale Transformation',
+      'ct.teamlead':      'Teamleitung',
+      'ct.architecture':  'Architektur',
+      'arteria.role':     'Leiter Informationstechnologie',
+      'arteria.loc':      '📍 Graz, Steiermark, Österreich',
+      'arteria.badge':    'Jan 2022 - Okt 2024 · 2 J. 10 Mo.',
+      'arteria.desc':     'Unternehmensaufbau gemeinsam mit dem Gründer und Skalierung der Lösung vom Prototyp zur Produktivumgebung. Leitung von Software- und Forschungsteams sowie Verantwortung für die gesamte Infrastruktur.',
+      'andritz.role':     'Spezialist, Enterprise Content Management',
+      'andritz.loc':      '📍 Graz, Österreich',
+      'andritz.badge':    'Apr 2018 - Jan 2022 · 3 J. 10 Mo.',
+      'andritz.desc':     'Entwicklungsteamlead und Software-Architekt in einem globalen Industriekonzern. Verantwortung für SAP HANA Cloud-Plattform und Einführung von Mendix Low-Code für internes Tooling. Treibende Kraft bei digitalen Transformationsinitiativen und Full-Stack Web, Mobile, Node-Backends, SharePoint, sowie Azure-Cloud-Entwicklung.',
+      'novo.role':        'Mobile-Games-Entwickler / Head of IT',
+      'novo.loc':         '📍 Graz, Österreich',
+      'novo.badge':       'Feb 2015 - Mär 2018 · 3 J. 2 Mo.',
+      'novo.desc':        'Entwicklung plattformübergreifender Mobile Games in C++ für Android und iOS unter dem NOVOMATIC-Dach. Gleichzeitig Head of IT bei Cervo Media - verantwortlich für Backend- und Frontend-Entwicklung, Windows- und Linux-Serveradministration, Azure-Infrastruktur, PostgreSQL sowie Netzwerksicherheit von A bis Z.',
+      'rb.role':          'Softwareentwickler / Architekt',
+      'rb.loc':           '📍 Graz, Österreich',
+      'rb.badge':         'Jan 2012 - Sep 2014 · 2 J. 9 Mo.',
+      'rb.desc':          'Entwicklung und Architektur von Java-Desktop-Applikationen und serverseitigen Systemen für eine Echtzeit-Sportdatenplattform. Beiträge über den gesamten Stack - von der Kernanwendungsarchitektur bis zum 3rd-Level-Support - in einem dynamischen, hochverfügbarkeitskritischen Umfeld.',
+      'fhj.role':         'Softwareentwickler — Forschung &amp; Entwicklung',
+      'fhj.loc':          '📍 Graz, Österreich',
+      'fhj.badge':        'Okt 2011 - Mär 2012 · 6 Mo.',
+      'fhj.desc':         'Microsoft Lync-Integration für ein Partnerunternehmen - Einbettung der Lync-API in SharePoint und Webportale. UI-Design und Framework-Entwicklung.',
+      'itsyou.role':      'Entwickler',
+      'itsyou.badge':     '2011 - 2012 · 1 J.',
+      'itsyou.desc':      'AS3/PHP-Programmierung für Promotionsspiele und Web-Gewinnspiele.',
+      'netco.role':       'Softwareentwickler / Praktikant',
+      'netco.badge':      'Jan 2011 - Mai 2011 · 5 Mo.',
+      'netco.desc':       'Webentwicklung mit dem Hybris-Shopsystem (Java). Web-Frontend mit JSP/JSF.',
+      'print.btn':        'Drucken / Als PDF speichern',
+    }
+  };
+
+  // ── Language switch ──────────────────────────────────────
+  function setLang(lang) {
+    document.documentElement.lang = lang;
+    try { localStorage.setItem('cv-lang', lang); } catch(e) {}
+    document.querySelectorAll('.lang-btn').forEach(btn =>
+      btn.classList.toggle('active', btn.dataset.lang === lang)
+    );
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+      const val = i18n[lang]?.[el.dataset.i18n];
+      if (val !== undefined) el.innerHTML = val;
+    });
+  }
+
+  // ── Init language from localStorage ─────────────────────
+  (function () {
+    let lang = 'en';
+    try { lang = localStorage.getItem('cv-lang') || 'en'; } catch(e) {}
+    if (lang !== 'en' && lang !== 'de') lang = 'en';
+    setLang(lang);
+  })();
+
+  // ── Build Gantt ruler ────────────────────────────────────
   (function () {
     const ruler = document.getElementById('ruler');
-    // Jan 2011 = 0,  Feb 2026 = 181 months
     const start = 2011, end = 2026, total = (end - start) * 12 + 2;
     for (let yr = start; yr <= end; yr++) {
       const pct = ((yr - start) * 12) / total * 100;
       const m = document.createElement('span');
       m.className = 'yr-mark';
       m.style.left = pct + '%';
-      //m.textContent = yr === end ? '' : String(yr).slice(2);
       m.textContent = yr;
       ruler.appendChild(m);
     }
   })();
 
-  // ── Animate timeline entries on scroll ─────────────────
+  // ── Animate timeline entries on scroll ───────────────────
   const entries = document.querySelectorAll('.tl-entry');
   const io = new IntersectionObserver(obs => {
     obs.forEach(e => {
@@ -926,7 +1129,7 @@
   }, { threshold: 0.08 });
   entries.forEach(e => io.observe(e));
 
-  // ── Animate language bars on scroll ────────────────────
+  // ── Animate language bars on scroll ─────────────────────
   const fills = document.querySelectorAll('.fill');
   const io2 = new IntersectionObserver(obs => {
     obs.forEach(e => {
@@ -939,10 +1142,18 @@
     });
   }, { threshold: 0.1 });
   fills.forEach(f => {
-    // read --w from inline style var trick
     const w = f.style.cssText.match(/--w:([\d.]+)/);
     if (w) { f.dataset.w = w[1]; f.style.width = '0'; }
     io2.observe(f);
+  });
+
+  // ── Prepare for print / PDF export ──────────────────────
+  window.addEventListener('beforeprint', function () {
+    document.querySelectorAll('.tl-entry').forEach(e => e.classList.add('vis'));
+    document.querySelectorAll('.fill').forEach(f => {
+      const w = f.dataset.w;
+      if (w) { f.style.width = (parseFloat(w) * 100) + '%'; f.classList.add('animate'); }
+    });
   });
 </script>
 </body>
