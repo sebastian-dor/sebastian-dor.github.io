@@ -454,7 +454,7 @@
       .summary-card { break-inside: avoid; }
       .tl-entry     { break-inside: avoid; }
       .tl-card      { break-inside: avoid; }
-      @page { margin: 1.2cm; size: A4; }
+      @page { margin: 1cm; size: A4; }
     }
 
     /* ── RESPONSIVE ──────────────────────────────────────── */
@@ -464,6 +464,10 @@
       .header-contacts { justify-content: center; }
       .lang-toggle { position: static; margin: 12px auto 0; }
     }
+
+    @media only print {
+
+    }
   </style>
 </head>
 <body>
@@ -471,7 +475,7 @@
 
   <!-- ══ HEADER ══════════════════════════════════════════ -->
   <header>
-    <div class="avatar"><img src="./headshot.png" alt="Sebastian Dorfer"></div>
+    <div class="avatar"><img src="headshot.png" alt="Sebastian Dorfer"></div>
     <div class="header-text">
       <h1>Sebastian Dorfer</h1>
       <div class="header-title" data-i18n="header.title">Principal Architect &amp; Cloud Platform Engineer</div>
@@ -511,7 +515,7 @@
     <div>
       <div class="s-title" data-i18n="skills.title">Skills</div>
       <div class="skill-group">
-        <div class="skill-group-label"></div>
+        <div class="skill-group-label">Softskills</div>
         <div class="tags">
           <span class="stag" data-i18n="stag.teamlead">Teamlead</span>
           <span class="stag" data-i18n="stag.strategy">Strategy</span>
@@ -545,7 +549,8 @@
         </div>
       </div>
     </div>
-
+<br/>
+<br/>
     <div>
       <div class="s-title" data-i18n="langs.title">Languages</div>
       <div class="lang">
