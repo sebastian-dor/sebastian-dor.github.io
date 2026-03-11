@@ -434,17 +434,35 @@
       *, *::before, *::after {
         -webkit-print-color-adjust: exact !important;
         print-color-adjust: exact !important;
+        transition: none !important;
+        animation: none !important;
       }
       body { background: #fff; }
-      .page { box-shadow: none; max-width: 100%; min-height: auto; }
-      *, *::before, *::after { transition: none !important; animation: none !important; }
+      /* Force desktop two-column layout regardless of paper width */
+      .page {
+        box-shadow: none !important;
+        max-width: 100% !important;
+        min-height: auto !important;
+        grid-template-columns: 285px 1fr !important;
+        display: grid !important;
+      }
+      header {
+        flex-direction: row !important;
+        text-align: left !important;
+      }
+      .header-contacts { justify-content: flex-start !important; }
+      .lang-toggle {
+        position: absolute !important;
+        top: 16px !important; right: 20px !important;
+        margin: 0 !important;
+        display: none !important;
+      }
       .tl-entry  { opacity: 1 !important; transform: none !important; }
       .fill      { transform: scaleX(1) !important; }
       .tl-card   { transform: none !important; box-shadow: 0 2px 8px rgba(0,0,0,.05) !important; }
       .gantt-bar { transform: none !important; filter: none !important; }
       .tip        { display: none !important; }
       .print-btn  { display: none !important; }
-      .lang-toggle { display: none !important; }
       .tl-entry.current .tl-dot {
         animation: none !important;
         box-shadow: 0 0 0 4px var(--accent-dim) !important;
@@ -454,19 +472,17 @@
       .summary-card { break-inside: avoid; }
       .tl-entry     { break-inside: avoid; }
       .tl-card      { break-inside: avoid; }
-      @page { margin: 1cm; size: A4; }
+      @page { margin: 0.8cm; size: A4; }
     }
 
     /* ── RESPONSIVE ──────────────────────────────────────── */
-    @media (max-width: 780px) {
+    @media (max-width: 960px) {
+      aside {max-width: 25vw;}
+      main {width: 75vw; margin-left: -12.5vw;}
       .page { grid-template-columns: 1fr; }
       header { flex-direction: column; text-align: center; }
       .header-contacts { justify-content: center; }
       .lang-toggle { position: static; margin: 12px auto 0; }
-    }
-
-    @media only print {
-
     }
   </style>
 </head>
@@ -507,7 +523,7 @@
     <div>
       <div class="s-title" data-i18n="about.title">About</div>
       <p class="summary" data-i18n="about.text">
-        Principal Architect who takes ownership of hard problems and sees them through — with technical rigour, full accountability, and uncompromising integrity.
+        Principal Architect who takes ownership of complex problems and sees them through — with technical rigour, full accountability, and uncompromising integrity.
         <strong>Led teams. Built departments. Shipped solutions.</strong>
       </p>
     </div>
@@ -549,8 +565,6 @@
         </div>
       </div>
     </div>
-<br/>
-<br/>
     <div>
       <div class="s-title" data-i18n="langs.title">Languages</div>
       <div class="lang">
@@ -950,7 +964,7 @@
       'header.title':     'Principal Architect &amp; Cloud Platform Engineer',
       'header.location':  'Graz, Austria',
       'about.title':      'About',
-      'about.text':       'Principal Architect who takes ownership of hard problems and sees them through — with technical rigour, full accountability, and uncompromising integrity.<strong>Led teams. Built departments. Shipped solutions.</strong>',
+      'about.text':       'Principal Architect who takes ownership of complex problems and sees them through — with technical rigour, full accountability, and uncompromising integrity.<strong>Led teams. Built departments. Shipped solutions.</strong>',
       'skills.title':     'Skills',
       'skills.langs-fw':  'Languages &amp; Frameworks',
       'skills.infra':     'Infrastructure',
@@ -1019,7 +1033,7 @@
       'header.title':     'Principal Architect &amp; Cloud-Plattformingenieur',
       'header.location':  'Wien / Graz, Österreich',
       'about.title':      'Über mich',
-      'about.text':       'Principal Architect, der schwierige Probleme in die Hand nimmt und konsequent umsetzt - mit technischer Präzision, voller Verantwortung und kompromissloser Integrität.<strong>Teams geführt. Abteilungen aufgebaut. Lösungen geliefert.</strong>',
+      'about.text':       'Principal Architect, der komplexe Probleme in die Hand nimmt und konsequent umsetzt - mit technischer Präzision, voller Verantwortung und kompromissloser Integrität.<strong>Teams geführt. Abteilungen aufgebaut. Lösungen geliefert.</strong>',
       'skills.title':     'Kenntnisse',
       'skills.langs-fw':  'Sprachen &amp; Frameworks',
       'skills.infra':     'Infrastruktur',
