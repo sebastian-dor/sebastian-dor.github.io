@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sebastian Dorfer — Principal Architect</title>
+  <title>Sebastian Dorfer - Principal Architect</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -449,8 +449,8 @@
         flex-direction: row !important;
         text-align: left !important;
       }
-      aside {max-width: 25vw;}
-      main {width: 75vw; margin-left: -12.5vw;}
+      /* aside {max-width: 50vw;} */
+      /* main {width: 65vw;} */
       .header-contacts { justify-content: flex-start !important; }
       .lang-toggle {
         position: absolute !important;
@@ -468,12 +468,16 @@
         animation: none !important;
         box-shadow: 0 0 0 4px var(--accent-dim) !important;
       }
-      header        { break-inside: avoid; }
+      .page   { break-inside: avoid; }
+      header        { 
+        break-inside: avoid; 
+        break-after: avoid;
+      }
       .gantt-wrap   { break-inside: avoid; }
       .summary-card { break-inside: avoid; }
       .tl-entry     { break-inside: avoid; }
       .tl-card      { break-inside: avoid; }
-      @page { margin: 0.8cm; size: A4; }
+      @page { margin: 0.8cm; size: A3; }
     }
 
     /* ── RESPONSIVE ──────────────────────────────────────── */
@@ -561,6 +565,7 @@
         <div class="tags">
           <span class="stag">Linux</span><span class="stag">Windows Server</span>
           <span class="stag">PostgreSQL</span><span class="stag">MSSQL</span>
+          <span class="stag">Kubernetes</span><span class="stag">Docker</span>
           <span class="stag">Android</span><span class="stag">iOS</span>
           <span class="stag">M365</span><span class="stag">Azure</span>
           <span class="stag">Powerplatform</span><span class="stag">Azure Devops</span>
@@ -755,6 +760,8 @@
             <span class="ct ct-infra">Security</span>
             <span class="ct ct-infra">IoT Platform</span>
             <span class="ct ct-infra">Azure</span>
+            <span class="ct ct-infra">Kubernetes</span>
+            <span class="ct ct-infra">Docker</span>
             <span class="ct ct-data">Databricks</span>
             <span class="ct ct-data">ETL</span>
             <span class="ct ct-lang">IaC (terraform)</span>
@@ -785,6 +792,7 @@
             <span class="ct ct-soft" data-i18n="ct.it-lead">IT Leadership</span>
             <span class="ct ct-soft" data-i18n="ct.strategy">Strategy</span>
             <span class="ct ct-infra">Azure</span>
+            <span class="ct ct-infra">Docker</span>
             <span class="ct ct-data">Databricks</span>
             <span class="ct ct-data">PostgreSQL</span>
             <span class="ct ct-data">InfluxDB</span>
