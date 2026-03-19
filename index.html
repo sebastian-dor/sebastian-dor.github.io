@@ -427,6 +427,7 @@
     }
     .print-btn:hover { background: #2d87d0; transform: translateY(-2px); }
     .print-btn svg { width: 14px; height: 14px; fill: currentColor; flex-shrink: 0; }
+
     
     /* ── PRINT / PDF EXPORT ──────────────────────────────── */
     @media print {
@@ -436,8 +437,11 @@
         transition: none !important;
         animation: none !important;
       }
-      body { background: #fff; }
-      /* Force desktop two-column layout regardless of paper width */
+      body {
+        background: #fff; 
+        padding-bottom: 70px; /* Extra space to prevent content overlap */
+      }  
+      
       .page {
         box-shadow: none !important;
         max-width: 100% !important;
@@ -449,8 +453,7 @@
         flex-direction: row !important;
         text-align: left !important;
       }
-      /* aside {max-width: 50vw;} */
-      /* main {width: 65vw;} */
+
       .header-contacts { justify-content: flex-start !important; }
       .lang-toggle {
         position: absolute !important;
@@ -477,7 +480,8 @@
       .summary-card { break-inside: avoid; }
       .tl-entry     { break-inside: avoid; }
       .tl-card      { break-inside: avoid; }
-      @page { margin: 0.8cm; size: A3; }
+      /* .print-btn {display: none}; */
+      @page { margin: 0.5cm; size: A3; }
     }
 
     /* ── RESPONSIVE ──────────────────────────────────────── */
@@ -747,7 +751,7 @@
               <div class="role" data-i18n="zyne.role">Principal Product Architect</div>
               <div class="loc"  data-i18n="zyne.loc">📍 Vienna, Austria</div>
             </div>
-            <div class="badge" data-i18n="zyne.badge">Nov 2024 - Present · 1 yr 3 mo</div>
+            <div class="badge" data-i18n="zyne.badge">Nov 2024 - Feb 2026 · 1 yr 4 mo</div>
           </div>
           <div class="desc" data-i18n="zyne.desc">
             Principal Cloud Platform Architect for an IoT data platform supporting millions of edge devices with hundreds of sensors each.
@@ -1004,11 +1008,11 @@
       'timeline.legend':  'Current position',
       'sec.experience':   'Experience',
       'tip.netco':        'Netconomy · Jan-May 2011',
-      'tip.zyne':         'ZYNE · Nov 2024-Present',
+      'tip.zyne':         'ZYNE · Nov 2024-Feb 2026',
       'tip.fhj':          'FH Joanneum R&amp;D · Oct 2011-Mar 2012',
       'zyne.role':        'Principal Product Architect',
       'zyne.loc':         '📍 Vienna, Austria',
-      'zyne.badge':       'Nov 2024 - Present · 1 yr 3 mo',
+      'zyne.badge':       'Nov 2024 - Feb 2026 · 1 yr 4 mo',
       'zyne.desc':        'Principal Cloud Platform Architect for an IoT data platform supporting millions of edge devices with hundreds of sensors each. Ingesting and transforming terabytes of data in parallel in a highly secure environment. Strategic technical decisions for ISO 27001 certified and NIS2 ready cloud platform. Introduction of AI-assisted development.',
       'ct.it-lead':       'IT Leadership',
       'ct.strategy':      'Strategy',
@@ -1073,11 +1077,11 @@
       'timeline.legend':  'Aktuelle Position',
       'sec.experience':   'Berufserfahrung',
       'tip.netco':        'Netconomy · Jan-Mai 2011',
-      'tip.zyne':         'ZYNE · Nov 2024-Heute',
+      'tip.zyne':         'ZYNE · Nov 2024-Feb 2026',
       'tip.fhj':          'FH Joanneum F&amp;E · Okt 2011-Mär 2012',
       'zyne.role':        'Principal Product Architect',
       'zyne.loc':         '📍 Wien, Österreich',
-      'zyne.badge':       'Nov 2024 - Heute · 1 J. 3 Mo.',
+      'zyne.badge':       'Nov 2024 - Feb 2026 · 1 J. 4 Mo.',
       'zyne.desc':        'Principal Cloud-Plattform-Architekt für eine IoT-Datenplattform, die Millionen von Edge-Geräten mit jeweils hunderten Sensoren versorgt. Parallelisiertes Einlesen und Transformation von Terabytes an Daten in einer hochsicheren Umgebung. Strategische Technologieentscheidungen für eine ISO 27001-zertifizierte und NIS2-konforme Cloud-Plattform. Einführung von KI-Unterstützter Entwicklung.',
       'ct.it-lead':       'IT-Leitung',
       'ct.strategy':      'Strategie',
@@ -1188,6 +1192,8 @@
       if (w) { f.style.width = (parseFloat(w) * 100) + '%'; f.classList.add('animate'); }
     });
   });
+
+  
 </script>
 </body>
 </html>
